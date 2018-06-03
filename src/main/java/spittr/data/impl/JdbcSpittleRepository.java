@@ -56,7 +56,8 @@ public class JdbcSpittleRepository implements SpittleRepository {
                     new SpittleRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
 //            throw new SpittleNotFoundException(id);
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            return null;
         }
     }
 
