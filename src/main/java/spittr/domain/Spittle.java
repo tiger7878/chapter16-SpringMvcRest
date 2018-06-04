@@ -3,6 +3,7 @@ package spittr.domain;
 import java.util.Date;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * User: monkey
@@ -12,6 +13,7 @@ public class Spittle {
 
     private Long id;
     private String message;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date time;
     private Double latitude;
     private Double longitude;

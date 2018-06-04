@@ -1,14 +1,17 @@
 package spittr.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import spittr.data.SpittleRepository;
 import spittr.domain.Spittle;
 import spittr.exception.SpittleNotFoundException;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -77,4 +80,22 @@ public class SpittleApiController {
 //        return new ResponseEntity<Error>(error,HttpStatus.NOT_FOUND);
         return error;
     }
+
+    @RequestMapping(value = "/save",method = RequestMethod.GET)
+    public String save(){
+        return "save";
+    }
+
+    @RequestMapping(value ="/save",method = RequestMethod.POST)
+    public Spittle save(Spittle spittle){
+        return spittleRepository.save(spittle);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true)); // true:允许输入空值，false:不能为空值
+
+    }
+
 }
