@@ -13,7 +13,6 @@ public class Spittle {
 
     private Long id;
     private String message;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date time;
     private Double latitude;
     private Double longitude;
@@ -58,4 +57,23 @@ public class Spittle {
         return HashCodeBuilder.reflectionHashCode(this, "id", "time");
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 }

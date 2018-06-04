@@ -87,6 +87,7 @@ public class SpittleApiController {
     }
 
     @RequestMapping(value ="/save",method = RequestMethod.POST)
+    @ResponseBody
     public Spittle save(Spittle spittle){
         return spittleRepository.save(spittle);
     }
@@ -95,7 +96,6 @@ public class SpittleApiController {
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true)); // true:允许输入空值，false:不能为空值
-
     }
 
 }
