@@ -2,15 +2,18 @@ package spittr.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import spittr.data.SpittleRepository;
 import spittr.domain.Spittle;
 import spittr.exception.SpittleNotFoundException;
 
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -87,11 +90,30 @@ public class SpittleApiController {
     }
 
     @RequestMapping(value ="/save",method = RequestMethod.POST)
-    @ResponseBody
-    public Spittle save(Spittle spittle){
-        return spittleRepository.save(spittle);
+//    @ResponseBody
+//    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Spittle> save(Spittle spittle, UriComponentsBuilder ucb){
+        //Spring提供了 UriComponentsBuilder，可以给我们一些帮助。
+        //它是一个构建类，通过逐步指定URL中的各种组成部分（如host、端口、路径以及 查询），我们能够使用它来构建UriComponents实例
+        Spittle spittle1 = spittleRepository.save(spittle);
+
+        //响应头部信息
+        HttpHeaders headers=new HttpHeaders();
+//        URI uri=URI.create("http://localhost:8080/spittle/"+spittle1.getId());//硬编码不好
+
+        //计算uri
+        URI uri=ucb.path("/spittle/")
+                .path(String.valueOf(spittle1.getId()))
+                .build()
+                .toUri();
+        headers.setLocation(uri);//设置location
+
+        ResponseEntity<Spittle> responseEntity=new ResponseEntity<Spittle>(spittle1,headers,HttpStatus.CREATED);
+
+        return responseEntity;
     }
 
+    //处理日期
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
